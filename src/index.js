@@ -3,7 +3,7 @@ import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import fetchImages from './getImage';
 
-const form = document.querySelector("input[name=searchQuery]");
+const form = document.querySelector(".search-form");
 const gallery = document.querySelector(".gallery");
 
 let pageNumber = 1;
