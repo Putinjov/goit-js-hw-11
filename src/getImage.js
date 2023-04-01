@@ -8,4 +8,4 @@ async function fetchImages(query, page = 1) {
   return response.data;
 }
 
-export default { fetchImages };
+export default fetchImages;

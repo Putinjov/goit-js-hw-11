@@ -15,18 +15,18 @@ form.addEventListener("submit", onSearch);
 
 function onSearch(event) {
   event.preventDefault();
-  const searchQuery = form.dataset.value.trim();
-  console.log(searchQuery);
-  if (searchQuery === "") {
+  const formData = new FormData(form);
+  const query = formData.get('searchQuery').trim();
+  if (query === "") {
     return Notiflix.Notify.failure("Input query!");
   }
 
-  if (searchQuery !== currentQuery) {
+  if (query !== currentQuery) {
     clearGallery();
     pageNumber = 1;
   }
 
-  currentQuery = searchQuery;
+  currentQuery = query;
 
   fetchImages(currentQuery, pageNumber)
     .then((response) => {
