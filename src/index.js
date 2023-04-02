@@ -5,6 +5,8 @@ import fetchImages from './getImage';
 
 const form = document.querySelector(".search-form");
 const gallery = document.querySelector(".gallery");
+const loadMoreBtn = document.querySelector('.load-more');
+const endCollectionText = document.querySelector('.end-collection-text');
 
 let pageNumber = 1;
 let currentQuery = "";
@@ -30,8 +32,9 @@ function onSearch(event) {
 
   fetchImages(currentQuery, pageNumber)
     .then((response) => {
-      const hits = response.data.hits;
-      const totalHits = response.data.totalHits;
+      console.log(response.hits)
+      const hits = response.hits;
+      const totalHits = response.totalHits;
       if (hits.length === 0) {
         Notiflix.Notify.failure(
           "Sorry, there are no images matching your search query. Please try again."
@@ -40,10 +43,10 @@ function onSearch(event) {
       }
 
       Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
-
       const imagesMarkup = createImagesMarkup(hits);
       addImagesToGallery(imagesMarkup);
-      pageNumber +=1;
+      pageNumber += 1;
+      loadMoreBtn.classList.toggle('is-hidden');
     })
     .catch((error) => {
       console.log(error);
@@ -77,6 +80,7 @@ function createImagesMarkup(images) {
       `;
     })
     .join("");
+  
 }
 
 function addImagesToGallery(markup) {
@@ -88,13 +92,27 @@ function clearGallery() {
   gallery.innerHTML = "";
 }
 
-window.addEventListener("scroll", onScroll);
+// window.addEventListener("scroll", onScroll);
 
-function onScroll() {
-const { height: cardHeight } =gallery
-  .firstElementChild.getBoundingClientRect();
-window.scrollBy({
-  top: cardHeight * 2,
-  behavior: "smooth",
-});
+// function onScroll() {
+// const { height: cardHeight } =gallery
+//   .firstElementChild.getBoundingClientRect();
+//   window.scrollBy({
+//     top: cardHeight * 2,
+//     behavior: "smooth",
+//   });
+// }
+
+loadMoreBtn.addEventListener('click', onClickLoadMoreBtn);
+
+function onClickLoadMoreBtn() {
+  pageNumber += 1;
+  createImagesMarkup(response.hits);
+  lightbox.refresh();
+  hits += response.hits.length;
+
+  if (currentHits === response.totalHits) {
+    loadMoreBtn.classList.add('is-hidden');
+    endCollectionText.classList.remove('is-hidden');
+  }
 }
