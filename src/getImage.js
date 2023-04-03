@@ -1,11 +1,33 @@
 import axios from "axios";
 
-const API_KEY = '34785269-2da0cadfc3fd212a10b88586f';
-const BASE_URL = 'https://pixabay.com/api/';
 
-async function fetchImages(query, page = 1) {
-  const response = await axios.get(`${BASE_URL}?key=${API_KEY}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`);
-  return response.data;
+export default class NewsApiServices {
+  constructor() {
+    this.searchQuery = '';
+    this.page = 1;
+  }
+
+  fetchImages() {
+    const API_KEY = '34785269-2da0cadfc3fd212a10b88586f';
+    const BASE_URL = 'https://pixabay.com/api/';
+    const response = axios.get(`${BASE_URL}?key=${API_KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&page=${this.page}&per_page=40`);
+    this.incrementPage();
+    return response;
+  }
+
+  incrementPage() {
+    this.page += 1;
+  }
+
+  resetPage() {
+    this.page = 1;
+  }
+
+  get query() {
+    return this.searchQuery;
+  }
+
+  set query(newQuery) {
+    this.searchQuery = newQuery;
+  }
 }
-
-export default fetchImages;
