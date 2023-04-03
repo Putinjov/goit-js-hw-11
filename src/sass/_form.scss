@@ -37,23 +37,6 @@ p {
     padding: 0;
 }
 
-
-.container {
-    width: $mobile;
-    margin: 0 auto;
-    margin-top: 110px;
-    padding: 0 10px 0 10px;
-
-    @media screen and (min-width: $tablet) {
-        width: $tablet;
-    }
-
-    @media screen and (min-width: $desktop) {
-        width: $desktop;
-    }
-}
-
-
 .search-form {
     position: fixed;
     top: 0;
@@ -123,45 +106,44 @@ p {
 
 
 .gallery {
+    margin-top: 110px;
     justify-content: center;
-    @media screen and (min-width: $tablet) {
-        display: flex;
-        flex-wrap: wrap;
-        margin: -10px;
-    }
+    @media screen and (min-width: $mobile) {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
 }
 
 .photo-card {
-    margin-bottom: 10px;
-    width: 300px;
 
-    box-shadow: 0px 3px 8px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.5);
     border-radius: 5px;
-    overflow: hidden;
+    
 
     :last-child {
         margin-bottom: 0;
     }
 
-    @media screen and (min-width: $tablet) {
-        width: calc((100% - 10px * 8) / 5);
-        margin: 10px;
-    }
-
-    @media screen and (min-width: $desktop) {
-        width: calc((100% - 10px * 8) / 4);
-    }
     img{
         margin: 0;
     }
 }
 
+.thumb{
+    width: 300px;
+    height: 150px;
+    overflow: hidden;
+    object-fit: cover;
+}
+
 .info {
+    font-size: small;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
 
-    padding: 15px;
+    padding: 10px;
 }
 
 .info-item {
@@ -169,6 +151,11 @@ p {
     flex-direction: column;
     text-align: center;
 }
+
+.info-item:not(:last-child){
+    margin-right: 5px;
+}
+
 .load-more {
     width: 200px;
     height: 40px;

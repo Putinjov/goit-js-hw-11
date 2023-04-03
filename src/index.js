@@ -20,19 +20,20 @@ function onSearch(event) {
   const formData = new FormData(form);
   const query = formData.get('searchQuery').trim();
   if (query === "") {
+    loadMoreBtn.classList.toggle('is-hidden');
     return Notiflix.Notify.failure("Input query!");
   }
 
   if (query !== currentQuery) {
     clearGallery();
     pageNumber = 1;
+    loadMoreBtn.classList.toggle('is-hidden');
   }
 
   currentQuery = query;
 
   fetchImages(currentQuery, pageNumber)
     .then((response) => {
-      console.log(response.hits)
       const hits = response.hits;
       const totalHits = response.totalHits;
       if (hits.length === 0) {
@@ -46,7 +47,7 @@ function onSearch(event) {
       const imagesMarkup = createImagesMarkup(hits);
       addImagesToGallery(imagesMarkup);
       pageNumber += 1;
-      loadMoreBtn.classList.toggle('is-hidden');
+      loadMoreBtn.classList.remove('is-hidden');
     })
     .catch((error) => {
       console.log(error);
@@ -59,9 +60,11 @@ function createImagesMarkup(images) {
     .map(({ webformatURL, largeImageURL, likes, views, comments, downloads, tags }) => {
       return `
         <div class="photo-card">
-          <a href="${webformatURL}">
+          <div class="thumb">
+            <a class="image" href="${webformatURL}">
             <img src="${largeImageURL}" alt="${tags}" loading="lazy" />
-          </a>
+            </a>
+          </div>
           <div class="info">
             <p class="info-item">
               <b>Likes</b> ${likes}
@@ -106,13 +109,12 @@ function clearGallery() {
 loadMoreBtn.addEventListener('click', onClickLoadMoreBtn);
 
 function onClickLoadMoreBtn() {
-  pageNumber += 1;
-  createImagesMarkup(response.hits);
+  fetchImages(currentQuery, pageNumber).then(createImagesMarkup(response.hits));
   lightbox.refresh();
   hits += response.hits.length;
 
   if (currentHits === response.totalHits) {
-    loadMoreBtn.classList.add('is-hidden');
-    endCollectionText.classList.remove('is-hidden');
-  }
+    loadMoreBtn.classList.toggle('is-hidden');
+    endCollectionText.classList.toggle('is-hidden');
+  };
 }
