@@ -20,6 +20,7 @@ async function onSearch(e) {
   const formData = new FormData(form);
   newsApiServices.query = formData.get('searchQuery').trim();
   newsApiServices.resetPage();
+  clearGallery();
   
 
   if (newsApiServices.query === "") {
@@ -42,7 +43,7 @@ await newsApiServices.fetchImages()
       Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
       const imagesMarkup = createImagesMarkup(hits);
       addImagesToGallery(imagesMarkup);
-      loadMoreBtn.classList.remove('is-hidden');
+      loadMoreBtn.classList.toggle('is-hidden');
       
     })
     .catch((error) => {
@@ -111,12 +112,12 @@ function onLoadMoreBtn() {
   
   
   if (response.data.total === response.data.totalHits) {
-    loadMoreBtn.classList.add('is-hidden');
     endCollection();
     }
   });
 }
 
 function endCollection() {
+  loadMoreBtn.classList.toggle('is-hidden');
   Notiflix.Notify.info("Were sorry, but you've reached the end of search results");
 }
