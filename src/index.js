@@ -6,10 +6,11 @@ import NewsApiServices from './getImage';
 const form = document.querySelector(".search-form");
 const gallery = document.querySelector(".gallery");
 const loadMoreBtn = document.querySelector('.load-more');
-
+const elements = document.querySelectorAll('.photo-card');
 
 const lightbox = new SimpleLightbox(".gallery a", {});
 const newsApiServices = new NewsApiServices();
+let currentQuantity = newsApiServices.quantity;
 
 form.addEventListener("submit", onSearch);
 loadMoreBtn.addEventListener("click", onLoadMoreBtn);
@@ -79,13 +80,16 @@ const { height: cardHeight } =gallery
 async function onLoadMoreBtn() {
   try {
     const response = await newsApiServices.fetchImages();
+    const elements = document.querySelectorAll('.photo-card');
+    if (elements.length === response.data.totalHits) {
+      endCollection();
+    };
+    
     const nextPageMarkup = createImagesMarkup(response.data.hits);
     addImagesToGallery(nextPageMarkup);
+    
     let timeoutScroll = setTimeout( onScroll, 1000);
 
-    if (response.data.total === response.data.totalHits) {
-      endCollection();
-    }
   } catch (error) {
     console.log(error);
     Notiflix.Notify.failure("Oops, something went wrong...");
