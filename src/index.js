@@ -17,7 +17,7 @@ loadMoreBtn.addEventListener("click", onLoadMoreBtn);
 
 function onSearch(e) {
   e.preventDefault();
-  getQuery();
+  getQuery(e);
 
   try {
     fetchData();
@@ -101,9 +101,8 @@ function endCollection() {
   Notiflix.Notify.info("Were sorry, but you've reached the end of search results");
 }
 
-function getQuery() {
-  const formData = new FormData(form);
-  newsApiServices.query = formData.get('searchQuery').trim();
+function getQuery(e) {
+  newsApiServices.query = e.currentTarget.searchQuery.value.trim();
   newsApiServices.resetPage();
   clearGallery();
 
